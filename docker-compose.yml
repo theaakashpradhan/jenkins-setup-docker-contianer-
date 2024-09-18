@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  jenkins:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: jenkins
+    user: root  # Allows Jenkins to manage Docker inside the container
+    restart: unless-stopped
+    ports:
+      - "8080:8080"  # Jenkins Web UI
+      - "50000:50000"  # Jenkins agent communication port
+    volumes:
+      - jenkins_home:/var/jenkins_home  # Persistent Jenkins data
+      - /var/run/docker.sock:/var/run/docker.sock  # Access Docker daemon
+
+volumes:
+  jenkins_home:
+    driver: local
